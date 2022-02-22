@@ -52,7 +52,7 @@ class AppComponent(
     }
 }
 
-// Feature Component (have to provide somethink)
+// Feature Component (have to provide something)
 class FooComponent(
     deps: Deps
 ) : ProviderComponent<FooComponent.Deps, FooFeature>(deps) {
