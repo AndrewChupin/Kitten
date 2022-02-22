@@ -12,7 +12,7 @@ Advantages of this libraries:
 - **Api/Core Modules** - you can connect super-lightweight **api** module to feature libraries, and **core** module for main library
 - **Safe** - unlike Dagger 2, kodin or koin you have to write all implmentation of objects, but API of this library really short
 - **Simple** - it's probably takes less code than Dagger 2
-- **Lifecycle Management** - there is a lot of helpers in library to mange lifecyle of **components/deps set/dep**
+- **Lifecycle Management** - there are a lot of helpers in library to mange lifecyle of **components/deps set/dep**
 
 
 ## Guide
