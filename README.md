@@ -7,7 +7,7 @@ Kotlin DI fast and safe library
 This library fit to small and espesially **huge** projects. You can use it for multimodule Kotlin/Java project.
 
 Advantages of this libraries:
-- **Lightweight** - the entire library takes only 50 KB space
+- **Lightweight** - the entire library takes only 5 KB space
 - **Fast** - this library **doesn't use Codegen or Reflection**, only your code
 - **Api/Core Modules** - you can add super-lightweight **api** module to libraries, and **core** module for main library
 - **Safe** - unlike Dagger 2, kodin or koin you have to write all implmentation of objects, but API of this library really short
