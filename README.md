@@ -1,7 +1,7 @@
 # Krang
 Kotlin DI fast and safe library
 
-<img src="https://www.meme-arsenal.com/memes/7cbf0cd524871538f80199dd69325ce0.jpg">
+<img src="https://www.meme-arsenal.com/memes/7cbf0cd524871538f80199dd69325ce0.jpg" width="100%" height="500">
 
 ## Why?
 This library fit to small and espesially **huge** projects. You can use it for multimodule Kotlin/Java project.
