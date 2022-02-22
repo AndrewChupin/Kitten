@@ -1,4 +1,4 @@
-package com.vk.krang.example
+package com.vk.kitten.example
 
 import org.junit.Test
 

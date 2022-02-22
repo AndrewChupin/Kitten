@@ -1,4 +1,4 @@
-package com.vk.krang
+package com.vk.kitten
 
 abstract class BaseComponent<Deps>(
     protected open val deps: Deps

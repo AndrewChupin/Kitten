@@ -1,4 +1,4 @@
-package com.vk.krang
+package com.vk.kitten
 
 abstract class ProviderComponent<Deps, Subject>(
     deps: Deps

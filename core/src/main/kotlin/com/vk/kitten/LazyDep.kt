@@ -1,4 +1,4 @@
-package com.vk.krang
+package com.vk.kitten
 
 import java.lang.ref.WeakReference
 

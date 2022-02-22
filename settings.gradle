@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Krang"
+rootProject.name = "Kitten"
 
 include ':api' // for com.android.library
 include ':core' // for com.android.application

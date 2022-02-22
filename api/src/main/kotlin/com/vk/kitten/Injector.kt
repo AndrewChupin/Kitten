@@ -1,4 +1,4 @@
-package com.vk.krang
+package com.vk.kitten
 
 open class Injector<Delegate : Any> {
     private lateinit var delegate: Delegate

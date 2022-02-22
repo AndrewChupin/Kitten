@@ -1,4 +1,4 @@
-package com.vk.krang
+package com.vk.kitten
 
 class DependencyRegistry<Provider : ComponentProvider>(
     private val provider: Provider

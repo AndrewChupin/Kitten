@@ -1,3 +1,3 @@
-package com.vk.krang
+package com.vk.kitten
 
 object GlobalInjector : Injector<Unit>()

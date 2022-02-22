@@ -1,4 +1,4 @@
-package com.vk.krang
+package com.vk.kitten
 
 open class ComponentProvider : LifecycleBorrower() {
 

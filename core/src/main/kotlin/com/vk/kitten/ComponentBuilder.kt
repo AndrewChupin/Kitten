@@ -1,4 +1,4 @@
-package com.vk.krang
+package com.vk.kitten
 
 import java.util.*
 import kotlin.collections.HashMap
