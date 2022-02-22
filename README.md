@@ -39,7 +39,7 @@ class FooData
 class FooRepo(val id: FooData, val net: Network)
 class FooFeature(val repo: FooRepo, val serviceRepo: ServiceRepo)
 ```
-### 2. Create some components in Main Library
+### 4. Create some components in Main Library
 ``` kotlin
 // Main Component
 class AppComponent(
@@ -65,8 +65,8 @@ class FooComponent(
 }
 ```
 
-### 3. Create Component Provider in Main Library
-'''
+### 5. Create Component Provider in Main Library
+``` kotlin
 class AppComponentProvider(
     private val application: Application
 ) : ComponentProvider() {
@@ -104,9 +104,9 @@ class AppComponentProvider(
         }
     }
 }
-'''
+```
 
-### 4. Create Injector in each Secondary Module
+### 6. Create Injector in each Secondary Module
 ``` kotlin
 interface ManDelegate {
     fun provideFoo(data: FooData): FooFeature
@@ -116,7 +116,7 @@ interface ManDelegate {
 object ModInjector : Injector<ManDelegate>()
 ```
 
-### 5. Init Injector in Main Module
+### 7. Init Injector in Main Module
 
 ``` kotlin
 class Application : ComponentLifecycle {
@@ -150,7 +150,7 @@ class Application : ComponentLifecycle {
 ```
 
 
-### 6. Get your dependencies in each Secondary Module
+### 8. Get your dependencies in each Secondary Module
 ``` kotlin
 class FooFragment : ComponentLifecycle {
     fun onAttach() {
