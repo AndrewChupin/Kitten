@@ -9,7 +9,7 @@ This library fit to small and espesially **huge** projects. You can use it for m
 Advantages of this libraries:
 - **Lightweight** - the entire library takes only 5 KB space
 - **Fast** - this library **doesn't use Codegen or Reflection**, only your code
-- **Api/Core Modules** - you can add super-lightweight **api** module to libraries, and **core** module for main library
+- **Api/Core Modules** - you can connect super-lightweight **api** module to feature libraries, and **core** module for main library
 - **Safe** - unlike Dagger 2, kodin or koin you have to write all implmentation of objects, but API of this library really short
 - **Simple** - it's probably takes less code than Dagger 2
 - **Lifecycle Management** - there is a lot of helpers in library to mange lifecyle of **components/deps set/dep**
