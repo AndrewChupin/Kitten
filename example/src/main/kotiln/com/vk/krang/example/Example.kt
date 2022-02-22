@@ -31,13 +31,13 @@ class AppComponentProvider(
                     private val num = 12
 
                     // each time new
-                    override val seed: Seed by depNew { Seed(num) }
+                    override val seed: Seed by newDeps { Seed(num) }
 
                     // first call
-                    override val network by depLazy { Network(seed) }
+                    override val network by lazyDeps { Network(seed) }
 
                     // ref-counter
-                    override val serviceRepo: ServiceRepo by depRc { ServiceRepoImpl(application, network) }
+                    override val serviceRepo: ServiceRepo by rcDeps { ServiceRepoImpl(application, network) }
                 }
             )
         }
@@ -47,7 +47,7 @@ class AppComponentProvider(
         return wrapperFoo.getOrCreate(lifecycle) {
             FooComponent(
                 object : FooComponent.Deps, AppComponent.Deps by getApp().delegate() {
-                    override val repo by depRc { FooRepo(id, network) }
+                    override val repo by rcDeps { FooRepo(id, network) }
                 }
             )
         }
