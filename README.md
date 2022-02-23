@@ -32,7 +32,7 @@ implementation("com.vk.kitten:core:1.0.0")
 ``` kotlin
 implementation("com.vk.kitten:api:1.0.0")
 ```
-### 3. Create some dependecies somewhere
+### 3. Create some dependecies
 ``` kotlin
 // Dependencies
 class Seed(num: Int)
