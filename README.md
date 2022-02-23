@@ -47,7 +47,7 @@ class FooData
 class FooRepo(val id: FooData, val net: Network)
 class FooFeature(val repo: FooRepo, val serviceRepo: ServiceRepo)
 ```
-### 4. Create some components in Main Library
+### 4. Create some components in Main Module
 ``` kotlin
 // Main Component
 class AppComponent(
@@ -73,7 +73,7 @@ class FooComponent(
 }
 ```
 
-### 5. Create Component Provider in Main Library
+### 5. Create Component Provider in Main Module
 ``` kotlin
 class AppComponentProvider(
     private val application: Application
