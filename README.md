@@ -1,4 +1,4 @@
-# KittenDep
+# Kitten
 Kotlin DI fast and safe library
 
 <img src="https://i.pinimg.com/236x/ae/a3/5a/aea35a7874af4c09d2ee73998d8f8b6d.jpg">
