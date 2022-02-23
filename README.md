@@ -14,6 +14,12 @@ Advantages of this libraries:
 - **Simple** - it's probably takes less code than Dagger 2
 - **Lifecycle Management** - there are a lot of helpers in library to mange lifecyle of **components/deps set/dep**
 
+## How to make module system?
+You commonly don't have to create a lot of modules in your application, especcialy if you are using Gradle.
+Try to create modules like a group of features. If some part of screen/screen are using in several screen, you can move it to common module
+Eventially you module system should looks like this.
+![image](https://user-images.githubusercontent.com/15245196/155395076-9c6e679d-3444-4455-9c8c-2d9e1903e480.png)
+
 
 ## Guide
 ### 1. Add ":core" dependency to your Main Library (Application Entrypoint)
