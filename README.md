@@ -1,7 +1,7 @@
 # Kitten
 Kotlin DI fast and safe library
 
-<img src="https://i.pinimg.com/236x/ae/a3/5a/aea35a7874af4c09d2ee73998d8f8b6d.jpg" width="100%" height="500">
+<img src="https://i.pinimg.com/236x/ae/a3/5a/aea35a7874af4c09d2ee73998d8f8b6d.jpg">
 
 ## Why?
 This library fit to small and espesially **huge** projects. You can use it for multimodule Kotlin/Java project.
