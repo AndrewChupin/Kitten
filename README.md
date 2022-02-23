@@ -16,7 +16,9 @@ Advantages of this libraries:
 
 ## How to make module system?
 You commonly don't have to create a lot of modules in your application, especcialy if you are using Gradle.
+</br>
 Try to create modules like a group of features. If some part of screen/screen are using in several screen, you can move it to common module
+</br>
 Eventially you module system should looks like this.
 ![image](https://user-images.githubusercontent.com/15245196/155395076-9c6e679d-3444-4455-9c8c-2d9e1903e480.png)
 
