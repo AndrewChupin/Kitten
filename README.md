@@ -66,7 +66,7 @@ class FooComponent(
 ) : ProviderComponent<FooComponent.Deps, FooFeature>(deps) {
     override fun provide() = FooFeature(deps.repo, deps.serviceRepo)
     
-    // If compoents depends on another module you have to inherit it deps
+    // If component depends on another module you have to inherit it deps
     interface Deps : AppComponent.Deps {
         val repo: FooRepo
     }
