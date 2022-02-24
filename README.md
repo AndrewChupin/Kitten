@@ -90,13 +90,13 @@ class AppComponentProvider(
                     private val num = 12
 
                     // each time new
-                    override val seed: Seed by newDep { Seed(num) }
+                    override val seed by newDep { Seed(num) }
 
                     // first call
                     override val network by lazyDep { Network(seed) }
 
                     // ref-counter
-                    override val serviceRepo: ServiceRepo by rcDep { ServiceRepoImpl(application, network) }
+                    override val serviceRepo by rcDep { ServiceRepoImpl(application, network) }
                 }
             )
         }
