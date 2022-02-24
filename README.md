@@ -15,7 +15,7 @@ Advantages of this libraries:
 - **Lifecycle Management** - there are a lot of helpers in library to mange lifecyle of **components/deps set/dep**
 
 ## How to make module system?
-Commonly you don't have to create a lot of modules in your application, especcialy if you are using Gradle.
+Commonly you don't have to create a lot of modules in your application, especially if you are using Gradle.
 </br>
 Try to create modules like a group of features. If some screen/parts are using in several modules, you can move it to common module.
 </br>
@@ -106,7 +106,7 @@ class AppComponentProvider(
         return wrapperFoo.getOrCreate(lifecycle) {
             FooComponent(
                 object : FooComponent.Deps, AppComponent.Deps by getApp().delegate() {
-                    override val repo by rcDeps { FooRepo(id, network) }
+                    override val repo by rcDep { FooRepo(id, network) }
                 }
             )
         }
