@@ -103,7 +103,7 @@ class AppComponentProvider(
     }
 
     fun getFoo(id: FooData): FooComponent {
-        // you can pass key id to componentWrapper to identify specific component
+        // you can pass key like id to componentWrapper to identify specific component
         // that means you will get different components for different keys
         // by default key is null
         return wrapperFoo.getOrCreate(lifecycle, id) {
