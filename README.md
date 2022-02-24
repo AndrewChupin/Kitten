@@ -103,7 +103,10 @@ class AppComponentProvider(
     }
 
     fun getFoo(id: FooData): FooComponent {
-        return wrapperFoo.getOrCreate(lifecycle) {
+        // you can pass key id to componentWrapper to identify specific component
+        // that means you will get different components for different keys
+        // by default key is null
+        return wrapperFoo.getOrCreate(lifecycle, id) {
             FooComponent(
                 object : FooComponent.Deps, AppComponent.Deps by getApp().delegate() {
                     override val repo by rcDep { FooRepo(id, network) }
