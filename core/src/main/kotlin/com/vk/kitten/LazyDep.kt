@@ -17,7 +17,7 @@ abstract class LazyDep<Dep : Any, Holder : Any>(
             }
 
             val dep = initializer.invoke()
-            memory = createMemory()
+            memory = createMemory(dep)
             return dep
         }
 
@@ -25,26 +25,26 @@ abstract class LazyDep<Dep : Any, Holder : Any>(
     abstract fun getDependency(): Dep?
 
     @SingleThread
-    abstract fun createMemory(): Holder
+    abstract fun createMemory(dep: Dep): Holder
 }
 
 class LazyDepRc<Dep : Any>(
     initializer: () -> Dep
 ) : LazyDep<Dep, WeakReference<Dep>>(initializer) {
     override fun getDependency(): Dep? = memory?.get()
-    override fun createMemory(): WeakReference<Dep> = WeakReference(initializer.invoke())
+    override fun createMemory(dep: Dep): WeakReference<Dep> = WeakReference(dep)
 }
 
 class LazyDepGod<Dep : Any>(
     initializer: () -> Dep
 ) : LazyDep<Dep, Dep>(initializer) {
     override fun getDependency(): Dep? = memory
-    override fun createMemory(): Dep = initializer.invoke()
+    override fun createMemory(dep: Dep): Dep = dep
 }
 
 class LazyDepNew<Dep : Any>(
     initializer: () -> Dep
 ) : LazyDep<Dep, Dep>(initializer) {
     override fun getDependency(): Dep = initializer.invoke()
-    override fun createMemory(): Dep = initializer.invoke() // never used
+    override fun createMemory(dep: Dep): Dep = initializer.invoke() // never used
 }
