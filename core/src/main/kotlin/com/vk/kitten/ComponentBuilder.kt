@@ -11,16 +11,30 @@ class ComponentBuilder<Component> {
     fun getOrCreate(lifecycle: ComponentLifecycle, key: Any? = null, builder: () -> Component): Component {
         retrieveAll(key)
 
-        val map = componentsMultimap
-            .getOrPut(key) { WeakHashMap<ComponentLifecycle, Component>() }
+        val ref = componentsMultimap[key]?.let { componentsMap ->
+            val componentEntry = componentsMap.entries.firstOrNull { (_, component) ->
+                component != null
+            }
 
-        val ref = map.values.firstOrNull()
+            val existingLifecycle = componentEntry?.key
+            val existingComponent = componentEntry?.value
+
+            if (existingComponent != null && existingLifecycle != lifecycle) {
+                componentsMap[lifecycle] = existingComponent
+            }
+
+            existingComponent
+        }
+
         if (ref != null) {
             return ref
         }
 
         val newValue = builder.invoke()
-        map[lifecycle] = newValue
+        componentsMultimap[key] = WeakHashMap<ComponentLifecycle, Component>()
+            .apply {
+                put(lifecycle, newValue)
+            }
 
         return newValue
     }
