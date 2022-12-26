@@ -12,19 +12,13 @@ interface ManDelegate {
 
 object ModInjector : Injector<ManDelegate>()
 
-
-
 // IMPL
 class AppComponentProvider(
     private val application: Application
 ) : ComponentProvider() {
 
-    private val wrapperApp by componentWrapper<AppComponent>()
-    private val wrapperFoo by componentWrapper<FooComponent>()
-    private val wrapperBar by componentWrapper<BarComponent>()
-
     fun getApp(): AppComponent {
-        return wrapperApp.getOrCreate(lifecycle) {
+        return getOrCreate {
             AppComponent(
                 object : AppComponent.Deps {
                     // with component
@@ -44,7 +38,7 @@ class AppComponentProvider(
     }
 
     fun getFoo(id: FooData): FooComponent {
-        return wrapperFoo.getOrCreate(lifecycle) {
+        return getOrCreate(id) {
             FooComponent(
                 object : FooComponent.Deps, AppComponent.Deps by getApp().delegate() {
                     override val repo by rcDep { FooRepo(id, network) }
@@ -54,7 +48,7 @@ class AppComponentProvider(
     }
 
     fun getBar(id: FooData): BarComponent {
-        return wrapperBar.getOrCreate(lifecycle) {
+        return getOrCreate {
             BarComponent(
                 object : BarComponent.Deps, FooComponent.Deps by getFoo(id).delegate() {}
             )
@@ -88,7 +82,9 @@ class Application : ComponentLifecycle {
             provider = AppComponentProvider(app)
         ).apply {
             // Create deps and component immediately
-            create(app, AppComponentProvider::getApp)
+            create(app) { provider ->
+                provider.getApp()
+            }
 
             // Init delegate without deps and components
             register(ModInjector) { provider ->
@@ -129,7 +125,6 @@ class FooFragment : ComponentLifecycle {
         val feature = ModInjector.injectWith(this) { provideFoo(FooData()) }
     }
 }
-
 
 
 // /// //
