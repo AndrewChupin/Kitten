@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         minSdk 23
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -30,10 +30,18 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions {
+            freeCompilerArgs += '-Xcontext-receivers'
+        }
+    }
 }
 
 dependencies {
     implementation project(":core")
     implementation project(":api")
+    implementation project(":android")
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
     testImplementation 'junit:junit:4.13.2'
 }

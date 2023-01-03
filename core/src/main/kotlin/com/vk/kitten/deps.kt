@@ -6,10 +6,10 @@ import kotlin.reflect.KProperty
 operator fun <Dep : Any> LazyDep<Dep, out Any>.getValue(thisRef: Any?, property: KProperty<*>): Dep = value
 
 @SingleThread
-fun <Dep : Any> rcDep(initializer: () -> Dep): LazyDep<Dep, out Any> = LazyDepRc(initializer)
+fun <Dep : Any> depRc(initializer: () -> Dep): LazyDep<Dep, out Any> = LazyDepRc(initializer)
 
 @SingleThread
-fun <Dep : Any> lazyDep(initializer: () -> Dep): LazyDep<Dep, out Any> = LazyDepGod(initializer)
+fun <Dep : Any> depLazy(initializer: () -> Dep): LazyDep<Dep, out Any> = LazyDepGod(initializer)
 
 @SingleThread
-fun <Dep : Any> newDep(initializer: () -> Dep): LazyDep<Dep, out Any> = LazyDepNew(initializer)
+fun <Dep : Any> depNew(initializer: () -> Dep): LazyDep<Dep, out Any> = LazyDepNew(initializer)

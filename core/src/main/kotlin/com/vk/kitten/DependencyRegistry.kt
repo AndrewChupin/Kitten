@@ -9,7 +9,7 @@ class DependencyRegistry<Provider : ComponentProvider>(
     }
 
     @SingleThread
-    fun <Component : BaseComponent<out Any>> create(component: ComponentLifecycle, reg: (Provider) -> Component) {
+    fun <Cmp : Component> create(component: Any, reg: (Provider) -> Cmp) {
         GlobalInjector.injectWith(component) { reg(provider) }
     }
 

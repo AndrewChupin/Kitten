@@ -1,10 +1,11 @@
 package com.vk.kitten
 
 class ComponentProviderProducer {
+
 	private val builders = HashMap<Any, ComponentBuilder<out Component>>()
 
 	@Suppress("UNCHECKED_CAST")
-	fun <T : Component> produceProvider(clazz : Any) : ComponentBuilder<T> {
+	fun <T : Component> produceBuilder(clazz: Any) : ComponentBuilder<T> {
 		val component = builders[clazz] as? ComponentBuilder<T>
 
 		if (component != null) {

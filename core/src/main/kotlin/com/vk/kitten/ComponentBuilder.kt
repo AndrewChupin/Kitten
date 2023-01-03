@@ -5,11 +5,11 @@ import kotlin.collections.HashMap
 
 class ComponentBuilder<Component> {
 
-    private val componentsMultimap = HashMap<Any?, WeakHashMap<ComponentLifecycle, Component>>()
+    private val componentsMultimap = HashMap<Any?, WeakHashMap<Any, Component>>()
 
     @SingleThread
-    fun getOrCreate(lifecycle: ComponentLifecycle, key: Any? = null, builder: () -> Component): Component {
-        retrieveAll(key)
+    fun getOrCreate(lifecycle: Any, key: Any? = null, builder: () -> Component): Component {
+        retrieveAll(key) // TODO make auto remove
 
         val ref = componentsMultimap[key]?.let { componentsMap ->
             val componentEntry = componentsMap.entries.firstOrNull { (_, component) ->
@@ -31,7 +31,7 @@ class ComponentBuilder<Component> {
         }
 
         val newValue = builder.invoke()
-        componentsMultimap[key] = WeakHashMap<ComponentLifecycle, Component>()
+        componentsMultimap[key] = WeakHashMap<Any, Component>()
             .apply {
                 put(lifecycle, newValue)
             }
@@ -40,7 +40,7 @@ class ComponentBuilder<Component> {
     }
 
     private fun retrieveAll(except: Any? = null) {
-        componentsMultimap.iterator()
+        componentsMultimap.entries.iterator()
             .apply {
                 while (hasNext()) {
                     val item = next()

@@ -11,7 +11,12 @@ open class Injector<Delegate : Any> {
     }
 
     @SingleThread
-    fun <Subject> injectWith(lifecycle: ComponentLifecycle, factory: Delegate.() -> Subject): Subject {
+    fun isInit(): Boolean {
+        return ::delegate.isInitialized && ::borrower.isInitialized
+    }
+
+    @SingleThread
+    fun <Subject> injectWith(lifecycle: Any, factory: Delegate.() -> Subject): Subject {
         return borrower.borrow(lifecycle) {
             factory.invoke(delegate)
         }

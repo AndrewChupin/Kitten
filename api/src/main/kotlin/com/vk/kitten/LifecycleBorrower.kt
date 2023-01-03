@@ -4,7 +4,7 @@ abstract class LifecycleBorrower {
 
     @SingleThread
     internal fun <Subject> borrow(
-        lifecycle: ComponentLifecycle,
+        lifecycle: Any,
         factory: () -> Subject
     ): Subject {
         lock(lifecycle)
@@ -14,8 +14,8 @@ abstract class LifecycleBorrower {
     }
 
     @SingleThread
-    protected abstract fun lock(lifecycle: ComponentLifecycle)
+    protected abstract fun lock(lifecycle: Any)
 
     @SingleThread
-    protected abstract fun unlock(lifecycle: ComponentLifecycle)
+    protected abstract fun unlock(lifecycle: Any)
 }
