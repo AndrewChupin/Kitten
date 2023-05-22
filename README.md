@@ -72,7 +72,7 @@ class FooComponent(
 	fun provideFoo() = FooFeature(deps.repo, deps.serviceDeps.serviceRepo)
 	fun provideBar() = BarFeature(deps.serviceDeps.serviceRepo)
 
-    // If component depends on another module you have to inherit it deps
+	// If component depends on another module you have to inherit it deps
 	interface Deps {
 		val serviceDeps: AppComponent.ServiceDeps
 		val repo: FooRepo
@@ -87,7 +87,7 @@ class AppComponentProvider(
 ) : ComponentProvider() {
 
 	fun getApp(): AppComponent {
-		return getOrCreate {
+		return getOrCreate` {
 			AppComponent(
 				object : AppComponent.ServiceDeps {
 					override val netDeps = object : AppComponent.NetDeps {
@@ -103,9 +103,9 @@ class AppComponentProvider(
 	}
 
 	fun getFoo(id: FooData): FooComponent {
-        // you can pass key like id to componentWrapper to identify specific component
-        // that means you will get different components for different keys
-        // by default key is null
+		// you can pass key like id to componentWrapper to identify specific component
+		// that means you will get different components for different keys
+		// by default key is null
 		return getOrCreate(id) {
 			FooComponent(
 				object : FooComponent.Deps {
@@ -121,8 +121,8 @@ class AppComponentProvider(
 ### 6. Create Injector in each Secondary Module
 ``` kotlin
 interface ManDelegate {
-    fun provideFoo(data: FooData): FooFeature
-    fun provideBar(data: FooData): BarFeature
+	fun provideFoo(data: FooData): FooFeature
+	fun provideBar(data: FooData): BarFeature
 }
 
 object ModInjector : Injector<ManDelegate>()
@@ -135,7 +135,7 @@ class Application {
 
 	fun onCreate() {
 		val app = this
-
+		
 		DependencyRegistry(
 			provider = AppComponentProvider(app)
 		).apply {
@@ -143,7 +143,7 @@ class Application {
 			create(app) { provider ->
 				provider.getApp()
 			}
-
+		
 			// Init delegate without deps and components
 			register(ModInjector) { provider ->
 				object : ManDelegate {
@@ -161,12 +161,12 @@ class Application {
 ### 8. Get your dependencies in each Secondary Module
 ``` kotlin
 class FooFragment : ComponentLifecycle {
-    fun onAttach() {
+	fun onAttach() {
 		val feature = ModInjector.injectWith(this) { provideBar(FooData()) }
 		// or short example
 		val feature1 = ModInjector.inject { provideBar(FooData()) }
 		// or viewModel short example
 		val viewModel = ModInjector.viewModel { provideBar(FooData()) }
-    }
+	}
 }
 ```
