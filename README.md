@@ -87,7 +87,7 @@ class AppComponentProvider(
 ) : ComponentProvider() {
 
     fun getApp(): AppComponent {
-        return getOrCreate` {
+        return getOrCreate {
             AppComponent(
                 object : AppComponent.ServiceDeps {
                     override val netDeps = object : AppComponent.NetDeps {
