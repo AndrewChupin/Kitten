@@ -26,11 +26,11 @@ Eventially your module system should looks like this.
 ## Guide
 ### 1. Add ":core" dependency to your Main Library (Application Entrypoint)
 ``` kotlin
-implementation("com.vk.kitten:core:1.0.0")
+implementation("org.openwallet.kitten:core:1.0.0")
 ```
 ### 2. Add ":api" dependency to your Secondary Modules (Feature Entrypoint)
 ``` kotlin
-implementation("com.vk.kitten:api:1.0.0")
+implementation("org.openwallet.kitten:api:1.0.0")
 ```
 ### 3. Create some dependecies
 ``` kotlin
