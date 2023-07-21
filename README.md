@@ -26,11 +26,11 @@ Eventially your module system should looks like this.
 ## Guide
 ### 1. Add ":core" dependency to your Main Library (Application Entrypoint)
 ``` kotlin
-implementation("org.openwallet.kitten:core:1.0.0")
+implementation("io.github.andrewchupin:core:1.0.0")
 ```
 ### 2. Add ":api" dependency to your Secondary Modules (Feature Entrypoint)
 ``` kotlin
-implementation("org.openwallet.kitten:api:1.0.0")
+implementation("io.github.andrewchupin:api:1.0.0")
 ```
 ### 3. Create some dependecies
 ``` kotlin
@@ -51,70 +51,54 @@ class FooFeature(val repo: FooRepo, val serviceRepo: ServiceRepo)
 ``` kotlin
 // Main Component
 class AppComponent(
-    val serviceDeps: ServiceDeps,
+    val service: Service,
 ): Component {
-    interface NetDeps {
+    interface Net {
         val seed: Seed
         val network: Network
     }
 
-    interface ServiceDeps {
-        val netDeps: NetDeps
-        val serviceRepo: ServiceRepo
+    interface Service {
+        val net: Net
+        val repo: ServiceRepo
     }
 }
 
 // Feature Component (have to provide something)
-class FooComponent(
-    private val deps: Deps
-) : Component {
-
-    fun provideFoo() = FooFeature(deps.repo, deps.serviceDeps.serviceRepo)
-    fun provideBar() = BarFeature(deps.serviceDeps.serviceRepo)
-
-    // If component depends on another module you have to inherit it deps
-    interface Deps {
-        val serviceDeps: AppComponent.ServiceDeps
-        val repo: FooRepo
-    }
+interface FooComponent : Component {
+	val service: AppComponent.Service
+	val repo: FooRepo
 }
 ```
 
 ### 5. Create Component Provider in Main Module
 ``` kotlin
 class AppComponentProvider(
-    private val application: Application
+	private val application: Application
 ) : ComponentProvider() {
 
-    fun getApp(): AppComponent {
-        return getOrCreate {
-            AppComponent(
-                object : AppComponent.ServiceDeps {
-                    override val netDeps = object : AppComponent.NetDeps {
-                        private val num = 12 // with component
-                        override val seed by depNew { Seed(num) } // each time new
-                        override val network by depLazy { Network(seed) } // first call
-                    }
+	fun getFoo(id: FooData): FooComponent {
+		return getOrCreate(id) {
+			object : FooComponent {
+				override val service = app.service
+				override val repo by depRc { FooRepo(id, service.net.network) }
+			}
+		}
+	}
 
-                    override val serviceRepo by depRc { ServiceRepoImpl(application, netDeps.network) } // ref-counter
-                }
-            )
-        }
-    }
+	val app get() = getOrCreate {
+		AppComponent(
+			object : AppComponent.Service {
+				override val net = object : AppComponent.Net {
+					private val num = 12 // with component
+					override val seed by depLazy { Seed(num) } // each time new
+					override val network by depLazy { Network(seed) } // first call
+				}
 
-    fun getFoo(id: FooData): FooComponent {
-        // you can pass key like id to componentWrapper to identify specific component
-        // that means you will get different components for different keys
-        // by default key is null
-        return getOrCreate(id) {
-            FooComponent(
-                object : FooComponent.Deps {
-                    override val serviceDeps = getApp().serviceDeps
-                    override val repo by depRc { FooRepo(id, serviceDeps.netDeps.network) }
-                }
-            )
-        }
-    }
+				override val repo by depRc { ServiceRepoImpl(application, net.network) } // ref-counter
+			}
+		)
+	}
 }
 ```
 
@@ -134,25 +118,21 @@ object ModInjector : Injector<ManDelegate>()
 class Application {
 
     fun onCreate() {
-        val app = this
-        
-        DependencyRegistry(
-            provider = AppComponentProvider(app)
-        ).apply {
-            // Create deps and component immediately
-            create(app) { provider ->
-                provider.getApp()
-            }
-        
-            // Init delegate without deps and components
-            register(ModInjector) { provider ->
-                object : ManDelegate {
-                    private fun component(data: FooData) = provider.getFoo(data)
-                    override fun provideFoo(data: FooData) = component(data).provideFoo()
-                    override fun provideBar(data: FooData): BarFeature = component(data).provideBar()
-                }
-            }
-        }
+        Kitten.init(
+			provider = AppComponentProvider(this)
+		) {  deps ->
+			// Create deps and component immediately
+			create { deps.app }
+
+			// Init delegate without deps and components
+			register(ModInjector) {
+				object : ManDelegate {
+					private fun component(data: FooData) = deps.getFoo(data)
+					override fun provideFoo(data: FooData) = FooFeature(component(data).repo, deps.app.service.repo)
+					override fun provideBar(data: FooData): BarFeature = BarFeature(component(data).service.repo)
+				}
+			}
+		}
     }
 }
 ```
@@ -161,12 +141,23 @@ class Application {
 ### 8. Get your dependencies in each Secondary Module
 ``` kotlin
 class FooFragment : ComponentLifecycle {
+    // View
     fun onAttach() {
-        val feature = ModInjector.injectWith(this) { provideBar(FooData()) }
-        // or short example
-        val feature1 = ModInjector.inject { provideBar(FooData()) }
-        // or viewModel short example
-        val viewModel = ModInjector.viewModel { provideBar(FooData()) }
-    }
+		val feature = ModInjector.injectWith(this) { provideFoo(FooData()) }
+		// or short example
+		val feature1 = ModInjector.inject { provideFoo(FooData()) }
+		// or viewModel short example
+		val viewModel = ModInjector.viewModelLegacy { provideBar(FooData()) }
+	}
+    
+    // Compose
+    @Composable
+	fun Content() {
+		val feature = ModInjector.injectWith(this) { provideBar(FooData()) }
+		// or short example
+		val feature1 = ModInjector.inject { provideBar(FooData()) }
+		// or viewModel short example
+		val viewModel = ModInjector.viewModel { provideBar(FooData()) }
+	}
 }
 ```
