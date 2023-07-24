@@ -91,8 +91,8 @@ class AppComponentProvider(
             object : AppComponent.Service {
                 override val net = object : AppComponent.Net {
                     private val num = 12 // with component
-                    override val seed by depLazy { Seed(num) } // each time new
-                    override val network by depLazy { Network(seed) } // first call
+                    override val seed by depLazy { Seed(num) } // lazy
+                    override val network by depLazy { Network(seed) } // lazy
                 }
 
                 override val repo by depRc { ServiceRepoImpl(application, net.network) } // ref-counter
