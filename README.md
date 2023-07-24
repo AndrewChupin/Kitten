@@ -27,12 +27,12 @@ Eventially your module system should looks like this.
 ### 1. Add ":core" dependency to your Main Library (Application Entrypoint)
 ``` kotlin
 implementation("io.github.andrewchupin:core:1.1.0")
-// or with android helpers
-implementation("io.github.andrewchupin:android:1.1.0")
 ```
 ### 2. Add ":api" dependency to your Secondary Modules (Feature Entrypoint)
 ``` kotlin
 implementation("io.github.andrewchupin:api:1.1.0")
+// or with android helpers
+implementation("io.github.andrewchupin:android:1.1.0")
 ```
 ### 3. Create some dependecies
 ``` kotlin

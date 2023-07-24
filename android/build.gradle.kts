@@ -55,7 +55,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
     implementation(project(":api"))
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     testImplementation("junit:junit:4.13.2")
