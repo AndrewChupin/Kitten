@@ -29,7 +29,7 @@ publishing {
         create<MavenPublication>("release") {
             groupId = "io.github.andrewchupin"
             artifactId = project.path.drop(1).replace(":", "-")
-            version = "1.0.0"
+            version = "1.1.0"
 
             pom {
                 name.set("Kitten DI")
