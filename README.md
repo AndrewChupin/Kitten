@@ -66,39 +66,39 @@ class AppComponent(
 
 // Feature Component (have to provide something)
 interface FooComponent : Component {
-	val service: AppComponent.Service
-	val repo: FooRepo
+    val service: AppComponent.Service
+    val repo: FooRepo
 }
 ```
 
 ### 5. Create Component Provider in Main Module
 ``` kotlin
 class AppComponentProvider(
-	private val application: Application
+    private val application: Application
 ) : ComponentProvider() {
 
-	fun getFoo(id: FooData): FooComponent {
-		return getOrCreate(id) {
-			object : FooComponent {
-				override val service = app.service
-				override val repo by depRc { FooRepo(id, service.net.network) }
-			}
-		}
-	}
+    fun getFoo(id: FooData): FooComponent {
+        return getOrCreate(id) {
+            object : FooComponent {
+                override val service = app.service
+                override val repo by depRc { FooRepo(id, service.net.network) }
+            }
+        }
+    }
 
-	val app get() = getOrCreate {
-		AppComponent(
-			object : AppComponent.Service {
-				override val net = object : AppComponent.Net {
-					private val num = 12 // with component
-					override val seed by depLazy { Seed(num) } // each time new
-					override val network by depLazy { Network(seed) } // first call
-				}
+    val app get() = getOrCreate {
+        AppComponent(
+            object : AppComponent.Service {
+                override val net = object : AppComponent.Net {
+                    private val num = 12 // with component
+                    override val seed by depLazy { Seed(num) } // each time new
+                    override val network by depLazy { Network(seed) } // first call
+                }
 
-				override val repo by depRc { ServiceRepoImpl(application, net.network) } // ref-counter
-			}
-		)
-	}
+                override val repo by depRc { ServiceRepoImpl(application, net.network) } // ref-counter
+            }
+        )
+    }
 }
 ```
 
@@ -119,20 +119,20 @@ class Application {
 
     fun onCreate() {
         Kitten.init(
-			provider = AppComponentProvider(this)
-		) {  deps ->
-			// Create deps and component immediately
-			create { deps.app }
+            provider = AppComponentProvider(this)
+        ) {  deps ->
+            // Create deps and component immediately
+            create { deps.app }
 
-			// Init delegate without deps and components
-			register(ModInjector) {
-				object : ManDelegate {
-					private fun component(data: FooData) = deps.getFoo(data)
-					override fun provideFoo(data: FooData) = FooFeature(component(data).repo, deps.app.service.repo)
-					override fun provideBar(data: FooData): BarFeature = BarFeature(component(data).service.repo)
-				}
-			}
-		}
+            // Init delegate without deps and components
+            register(ModInjector) {
+                object : ManDelegate {
+                    private fun component(data: FooData) = deps.getFoo(data)
+                    override fun provideFoo(data: FooData) = FooFeature(component(data).repo, deps.app.service.repo)
+                    override fun provideBar(data: FooData): BarFeature = BarFeature(component(data).service.repo)
+                }
+            }
+        }
     }
 }
 ```
@@ -143,21 +143,21 @@ class Application {
 class FooFragment : ComponentLifecycle {
     // View
     fun onAttach() {
-		val feature = ModInjector.injectWith(this) { provideFoo(FooData()) }
-		// or short example
-		val feature1 = ModInjector.inject { provideFoo(FooData()) }
-		// or viewModel short example
-		val viewModel = ModInjector.viewModelLegacy { provideBar(FooData()) }
-	}
+        val feature = ModInjector.injectWith(this) { provideFoo(FooData()) }
+        // or short example
+        val feature1 = ModInjector.inject { provideFoo(FooData()) }
+        // or viewModel short example
+        val viewModel = ModInjector.viewModelLegacy { provideBar(FooData()) }
+    }
     
     // Compose
     @Composable
-	fun Content() {
-		val feature = ModInjector.injectWith(this) { provideBar(FooData()) }
-		// or short example
-		val feature1 = ModInjector.inject { provideBar(FooData()) }
-		// or viewModel short example
-		val viewModel = ModInjector.viewModel { provideBar(FooData()) }
-	}
+    fun Content() {
+        val feature = ModInjector.injectWith(this) { provideBar(FooData()) }
+        // or short example
+        val feature1 = ModInjector.inject { provideBar(FooData()) }
+        // or viewModel short example
+        val viewModel = ModInjector.viewModel { provideBar(FooData()) }
+    }
 }
 ```
